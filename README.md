@@ -71,6 +71,12 @@ The goal of these projects is to:
 * Create a professional portfolio
 
 ---
+## 📈 Future Improvements
+
+- Automation using Terraform
+- CI/CD integration
+- Advanced monitoring & alerting
+- Multi-cloud implementation
 
 ## 👨‍💻 Author
 Ayush Kumar Patel
