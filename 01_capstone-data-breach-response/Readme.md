@@ -1,173 +1,123 @@
 # 🚨 Cloud Security Capstone: Data Breach Response with BCDR Strategy
 
 ## 📌 Project Overview
-
-This project demonstrates a real-world **cloud security incident response scenario** on Google Cloud Platform (GCP), focusing on:
-
-* 🔐 Security Remediation
-* 🔄 Business Continuity
-* 🛑 Disaster Recovery (BCDR)
-* 📊 Compliance (PCI DSS)
-
----
+This project demonstrates a real-world **cloud security incident response scenario** on Google Cloud Platform (GCP). It showcases a complete lifecycle from detection to remediation and disaster recovery, focusing on:
+* **Securing Public-Facing Assets**
+* **Vulnerability Containment**
+* **Business Continuity (BC)**
+* **Disaster Recovery (DR)**
+* **Achieving Compliance (PCI DSS)**
 
 ## 🧠 Scenario
-
-A production cloud environment suffered a **critical data breach** due to:
-
-* Publicly exposed storage bucket
-* Compromised virtual machine (malware activity)
-* Overly permissive firewall rules
-* Lack of monitoring and logging
-
-As a Cloud Security Analyst, I was responsible for:
-
-✔ Identifying vulnerabilities
-✔ Containing the breach
-✔ Recovering affected systems
-✔ Ensuring business continuity
-✔ Implementing disaster recovery
-
----
+A production cloud environment suffered a **critical data breach** due to security misconfigurations. Publicly exposed storage buckets and a compromised virtual machine (VM) allowed malware activity and unauthorized access. As a Cloud Security Analyst, my responsibility was to contain the breach, remediate vulnerabilities, and restore operations with a robust BCDR strategy.
 
 ## 🎯 Objectives
-
-* Analyze findings using Security Command Center
-* Eliminate compromised resources
-* Restore services using backup (Disaster Recovery)
-* Secure storage and network configurations
-* Implement least privilege access
-* Achieve compliance with PCI DSS
-
----
+* Use Security Command Center (SCC) to analyze security findings.
+* Contain and eliminate compromised cloud resources.
+* Implement a robust **BCDR (Business Continuity & Disaster Recovery)** plan.
+* Secure storage buckets and network configurations (Firewall Hardening).
+* Enforce Least Privilege Access and improve **PCI DSS compliance**.
 
 ## 🛠️ Tools & Technologies
-
-* Google Cloud Platform (GCP)
-* Security Command Center
-* Compute Engine
-* Cloud Storage
-* VPC Firewall
-* gcloud CLI
-
----
-
-## 🔄 BCDR (Business Continuity & Disaster Recovery)
-
-### 🛑 Disaster Recovery
-
-* Used **Compute Engine Snapshots** as backup mechanism
-* Restored VM (`cc-app-02`) from snapshot (`cc-app01-snapshot`)
-* Removed compromised VM (`cc-app-01`)
-
-### 🔁 Business Continuity
-
-* Ensured minimal downtime during VM replacement
-* Maintained controlled access using firewall rules
-* Restored services without data loss
-
-👉 This demonstrates real-world **BCDR implementation using GCP native tools**
+* **Google Cloud Platform (GCP)**
+* **Security Command Center (SCC)**
+* **Compute Engine & Snapshots**
+* **Cloud Storage**
+* **VPC Firewall**
+* **gcloud CLI**
 
 ---
 
-## 🔧 Implementation Summary
+## 📸 Visual Proof of Work & Implementation Gallery
 
-### 1️⃣ Security Analysis
+This section documents the step-by-step implementation of the incident response and BCDR strategy.
 
-* Identified:
+### 1️⃣ Security Analysis & Findings
+Analyze the GCP environment's initial state using Security Command Center to identify high-severity vulnerabilities.
 
-  * Public bucket access
-  * Public IP exposure
-  * Open SSH/RDP ports
-  * Default service account misuse
+* **SCC Dashboard & Risk Posture Overview:**
+    Identified critical issues including publicly exposed storage buckets and insecure network configs.
+    ![GCP Security Dashboard Findings](Lab_Screenshots/01-dashboard.png)
+    ![High-Level Risk Posture Overview](Lab_Screenshots/02-risk-overview.png)
 
----
+* **Compliance Posture Assessment (PCI DSS):**
+    A detailed compliance scan revealed multiple violations of the PCI DSS standard before remediation.
+    ![Initial Low Compliance Score](Lab_Screenshots/03-compliance.png)
+    ![Detailed PCI DSS Violations List](Lab_Screenshots/04-compliance-details.png)
 
-### 2️⃣ Compute Engine Remediation
+### 2️⃣ Remediation Phases
 
-* Stopped compromised VM
-* Created new VM from snapshot
-* Enabled Secure Boot
-* Removed public IP
+#### A. Storage Bucket Security Fix
+Secure storage resources by disabling public access.
 
----
+* **Identified Bucket Findings:**
+    SCC flagged specific buckets with public access enabled.
+    ![Identified Insecure Storage Buckets](Lab_Screenshots/05-storage-findings.png)
 
-### 3️⃣ Storage Security Fix
+* *(Implementation: Public access disabled and uniform bucket-level access enforced).*
 
-* Disabled public bucket access
-* Enabled uniform bucket-level access
+#### B. Compute Engine Remediation & BCDR Implementation
+Contain the compromised VM, restore from backup, and verify the restored state.
 
----
+* **Compromised VM Findings & Disaster Recovery:**
+    SCC detected malware on `cc-app-01`. Compute Engine snapshots were used to restore from a known-good state. Compromised VM was destroyed.
+    ![Compromised VM Detected (Malware)](Lab_Screenshots/06-vm-findings.png)
+    ![Creating Secured VM from Snapshot](Lab_Screenshots/08-create-vm.png)
+    ![VM Instances List (Restored CC-APP-02 Running)](Lab_Screenshots/09-vm-list.png)
 
-### 4️⃣ Firewall Hardening
+* **Verifying Business Continuity:**
+    The new VM (`cc-app-02`) was verified to be running with restored data and secured configurations. Secure Boot was enforced.
+    ![Verifying Restored VM State](Lab_Screenshots/10-vm-after-fix.png)
+    ![Verifying Secured VM Configuration (Terminal with Secure Boot)](Lab_Screenshots/11-terminal-secureboot.png)
 
-* Restricted SSH access (IAP only)
-* Removed overly permissive rules
-* Enabled logging for monitoring
+#### C. Firewall Hardening
+Enforce network security by applying firewall rules that drop overly-permissive traffic.
+
+* **Firewall Over-Permissive Rules Found:**
+    SCC flagged VPC firewall rules that were too broad, increasing the attack surface.
+    ![Identified Insecure Firewall Rules](Lab_Screenshots/07-firewall-findings.png)
+
+* **Applying and Verifying Rules:**
+    Strict rules (e.g., IAP-only for SSH) were applied. Verification commands were executed.
+    ![Firewall Hardening Commands & Verification](Lab_Screenshots/12-firewall-commands.png)
+    ![Final Secured Firewall Configurations List](Lab_Screenshots/13-final-firewall.png)
 
 ---
 
 ## 📜 Commands
-
-All CLI commands used in this project are available here:
-
-👉 `commands.sh`
-
----
+All CLI commands used for identification, remediation, and BCDR execution are available here:
+👉 **`Commands.sh`**
 
 ## 🔍 Key Security Fixes
-
-| Issue           | Fix                             |
-| --------------- | ------------------------------- |
-| Public Bucket   | Disabled public access          |
-| Compromised VM  | Recreated from snapshot         |
-| Public IP       | Removed                         |
-| Open Ports      | Restricted                      |
-| No Logging      | Enabled logging                 |
-| Over-permission | Removed default service account |
-
----
-
-## 📸 Screenshots
-
-All screenshots are available in the `/images` folder.
-
----
+| Issue | Fix Implemented |
+| :--- | :--- |
+| **Public Bucket** | Disabled public access; Enabled Uniform bucket-level access. |
+| **Compromised VM** | Stopped/Destroyed VM; Restored safe VM from **Snapshots**. |
+| **Public IP** | Removed public IP; Enabled Private Service Connect/IAP. |
+| **Open Ports (SSH)** | Restricted access to IAP (Identity-Aware Proxy) only. |
+| **Over-Permissioned SA** | Removed unnecessary roles and default Service Account. |
 
 ## ✅ Results
-
-* ✔ High severity vulnerabilities resolved
-* ✔ Secure cloud architecture implemented
-* ✔ Compliance improved (PCI DSS)
-* ✔ Business continuity maintained
-* ✔ Disaster recovery successfully executed
-
----
+✔ **High Severity Findings Resolved**
+✔ **Robust BCDR Plan Executed Successfully**
+✔ **Secure Cloud Architecture Implemented**
+✔ **Improved Compliance Posture (PCI DSS)**
+✔ **Least Privilege Access Enforced**
 
 ## 💡 Key Learnings
-
-* Real-world cloud incident response workflow
-* Importance of **BCDR strategies in cloud**
-* Secure configuration best practices
-* Network security & IAM hardening
-
----
+* Practical, real-world Cloud Incident Response workflow.
+* Critical importance of **Business Continuity & Disaster Recovery (BCDR)** strategies.
+* Best practices for securing Google Cloud Platform resources (Compute, Storage, Network).
+* Leveraging SCC for proactive risk assessment and monitoring.
 
 ## 🚀 Future Improvements
-
-* Infrastructure as Code (Terraform)
-* Automated security monitoring
-* SIEM integration
-
----
+* Infrastructure as Code (Terraform) implementation.
+* Automated security monitoring using Cloud Functions and SCC.
+* Integration with a SIEM tool (e.g., Chronicle SIEM).
 
 ## 👨‍💻 Author
-Ayush Kumar Patel
-Aspiring Cloud Security Engineer 🚀
-Focused on building secure and resilient cloud systems.
-
----
+**Ayush Kumar Patel**
+*Aspiring Cloud & Cyber Security Engineer 🚀* | *Focused on building secure, resilient cloud systems.*
 
 ## ⭐ Support
-
 If you found this project useful, consider giving it a ⭐
